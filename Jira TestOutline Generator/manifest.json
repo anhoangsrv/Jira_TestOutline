@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "AutoTestOutline",
+  "version": "6.0",
+  "description": "Automatically extract content and generate test outlines using AI",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting",
+    "downloads"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": "icons/icon.png"
+  },
+  "icons": {
+    "16": "icons/icon.png",
+    "48": "icons/icon.png",
+    "128": "icons/icon.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["popup/result.html"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

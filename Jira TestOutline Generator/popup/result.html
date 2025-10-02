@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Outline Results</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    
+    .container {
+      display: flex;
+      gap: 20px;
+      max-width: 100%;
+      height: calc(100vh - 40px);
+    }
+    
+    .panel {
+      flex: 1;
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .panel-header {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #eee;
+      text-align: center;
+    }
+    
+    .panel-content {
+      flex: 1;
+      white-space: pre-wrap;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    
+    .jira-content {
+      border-left: 4px solid #2196F3;
+    }
+    
+    .ai-content {
+      border-left: 4px solid #4CAF50;
+    }
+    
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Test Outline Results</h1>
+  
+  <div class="container">
+    <div class="panel">
+      <div class="panel-header jira-content">Content from Jira XML</div>
+      <div id="jiraContent" class="panel-content jira-content"></div>
+    </div>
+    
+    <div class="panel">
+      <div class="panel-header ai-content">Test Outline from AI</div>
+      <div id="aiContent" class="panel-content ai-content"></div>
+    </div>
+  </div>
+  
+  <script src="result.js"></script>
+</body>
+</html>
