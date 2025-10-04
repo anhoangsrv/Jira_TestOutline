@@ -202,14 +202,17 @@ function summarizeHtmlContent(html) {
         return { html: listHtml, text: listText };
       }
       
+      // Xử lý bảng Jira:
+      // Khi gặp div.classList.contains('table-wrap'), lấy table bên trong và xử lý
       if (tagName === 'div' && element.classList.contains('table-wrap')) {
-        // Handle table wrapper div
         const table = element.querySelector('table');
         if (table) {
           return processElement(table, indentLevel);
         }
       }
       
+      // Xử lý bảng:
+      // Tạo HTML responsive table với overflow-x auto và các styles cần thiết
       if (tagName === 'table') {
         // Create responsive table HTML with horizontal scroll
         let tableHtml = `
@@ -268,6 +271,8 @@ function summarizeHtmlContent(html) {
         return { html: tableHtml, text: tableText };
       }
       
+      // Xử lý hình ảnh:
+      // Khi gặp thẻ img, tạo thẻ div chứa ảnh với max-width và border styling
       if (tagName === 'img') {
         const src = element.getAttribute('src');
         const alt = element.getAttribute('alt') || 'Image';
