@@ -45,6 +45,93 @@
       font-family: 'Courier New', monospace;
       font-size: 14px;
       line-height: 1.5;
+      overflow-x: auto;
+    }
+    
+    /* Styles for HTML content (Jira panel) */
+    #jiraContent {
+      white-space: normal;
+      font-family: Arial, sans-serif;
+    }
+    
+    #jiraContent .table-container {
+      overflow-x: auto;
+      margin: 15px 0;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background: white;
+    }
+    
+    #jiraContent table {
+      min-width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      background: white;
+      white-space: nowrap;
+    }
+    
+    #jiraContent th {
+      padding: 12px 8px;
+      background: #f8f9fa;
+      border: 1px solid #ddd;
+      font-weight: bold;
+      text-align: left;
+      min-width: 100px;
+    }
+    
+    #jiraContent td {
+      padding: 10px 8px;
+      border: 1px solid #ddd;
+      vertical-align: top;
+      min-width: 100px;
+    }
+    
+    #jiraContent h1, #jiraContent h2, #jiraContent h3, #jiraContent h4, #jiraContent h5, #jiraContent h6 {
+      color: #00875a;
+      font-weight: bold;
+      margin: 15px 0 10px 0;
+    }
+    
+    #jiraContent p {
+      margin: 8px 0;
+      line-height: 1.5;
+    }
+    
+    #jiraContent ul, #jiraContent ol {
+      margin: 10px 0;
+      padding-left: 20px;
+    }
+    
+    #jiraContent li {
+      margin: 5px 0;
+      line-height: 1.4;
+    }
+    
+    #jiraContent img {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 10px 0;
+    }
+    
+    /* Scrollbar styling for table containers */
+    #jiraContent .table-container::-webkit-scrollbar {
+      height: 8px;
+    }
+    
+    #jiraContent .table-container::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+    
+    #jiraContent .table-container::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 4px;
+    }
+    
+    #jiraContent .table-container::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
     }
     
     .jira-content {

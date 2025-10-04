@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Jira XML with Table</title>
+</head>
+<body>
+    <h1>Test Jira XML Content</h1>
+    <pre id="xml-content">
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="0.92">
+<channel>
+<item>
+<link>https://jira-la.secext.samsung.net/browse/TEST-123</link>
+<description>
+<h3><font color="#00875a"><b>Minimum Conditions of Acceptance</b></font></h3>
+<ul>
+<li>The color of the Expandable button should follow icon button for all states</li>
+<li>Adjust sub-item in Expandable List follow One UI 8</li>
+</ul>
+
+<h3><font color="#00875a"><b>Sub Items States</b></font></h3>
+<div class='table-wrap'>
+<table class='confluenceTable'>
+<tbody>
+<tr>
+<td class='confluenceTd'>OneUI 8</td>
+<td class='confluenceTd'><b>Rest</b></td>
+<td class='confluenceTd'>Hovered</td>
+<td class='confluenceTd'>Pressed</td>
+<td class='confluenceTd'>Disabled</td>
+<td class='confluenceTd'>Focus</td>
+</tr>
+<tr>
+<td class='confluenceTd'>Background</td>
+<td class='confluenceTd'>Book_Sys/Surface Container<br/>Book_Sys/High contrast/Color1_Window</td>
+<td class='confluenceTd'>Book_Sys/Book Touch Feedback/Hover On Large Plain<br/>Book_Sys/High contrast/Color5_HighlightText</td>
+<td class='confluenceTd'>Book_Sys/Book Touch Feedback/Press On Large Plain<br/>Book_Sys/High contrast/Color5_HighlightText</td>
+<td class='confluenceTd'>Book_Sys/Surface Container<br/>Book_Sys/High contrast/Color1_Window</td>
+<td class='confluenceTd'>Book_Sys/Surface Container<br/>Book_Sys/High contrast/Color1_Window</td>
+</tr>
+<tr>
+<td class='confluenceTd'>Text Color</td>
+<td class='confluenceTd'>Book_Sys/On Surface Container Highest<br/>Book_Sys/High contrast/Color2_WindowText</td>
+<td class='confluenceTd'>Book_Sys/On Surface Container Highest<br/>Book_Sys/High contrast/Color6_Highlight</td>
+<td class='confluenceTd'>Book_Sys/On Surface Container Highest<br/>Book_Sys/High contrast/Color6_Highlight</td>
+<td class='confluenceTd'>Book_Sys/On Surface Container Lowest<br/>Book_Sys/High contrast/Color4_GrayText</td>
+<td class='confluenceTd'>Book_Sys/On Surface Container Highest<br/>Book_Sys/High contrast/Color2_WindowText</td>
+</tr>
+<tr>
+<td class='confluenceTd'>Border</td>
+<td class='confluenceTd'>Book_Sys/Outline Low<br/>Book_Sys/High contrast/Color2_WindowText</td>
+<td class='confluenceTd'>Book_Sys/Outline Low<br/>Book_Sys/High contrast/Color6_Highlight</td>
+<td class='confluenceTd'>Book_Sys/Outline Low<br/>Book_Sys/High contrast/Color2_WindowText</td>
+<td class='confluenceTd'>Book_Sys/Outline Low<br/>Book_Sys/High contrast/Color2_WindowText</td>
+<td class='confluenceTd'>Book_Sys/Focus Stroke<br/>Book_Sys/High contrast/Color2_WindowText</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h3><font color="#00875a"><b>Additional Requirements</b></font></h3>
+<p>Focus stroke Rule 1.</p>
+<p>Round Corner: <b>sys-radius/50%</b></p>
+<p>Border: <b>sys-border-md 1px</b></p>
+<p>Size: <b>32*32 px</b></p>
+
+<h3><font color="#00875a"><b>Test Outlines</b></font></h3>
+<ul>
+<li>Check the color of the Expandable button should follow icon button for all states: Rest/ Hovered/ Pressed/ Disable/ Focus/ selected</li>
+<li>Check adjusts sub-item in Expandable List follow One UI 8 with 2 cases below:</li>
+<li>If Sub-item with text only</li>
+<li>If Sub item should have states, follow OneUI 8: Rest/ Hovered/ Pressed</li>
+<li>Check when Expand button is in hovered/pressed state, list item will be in rest state</li>
+<li>Check apply Colors/Type Scale/Border tokens follow OneUI 8 for Expandable List component and Expand button</li>
+<li>Check Focus stroke Rule 1: Round Corner: sys-radius/50% , Border: sys-border-md 1px, Size: 32*32 px for Expand button and list components</li>
+<li>Check Disable state of Text and Divider for Sub Items states</li>
+<li>Check Focus states follow rule 1: Round Corner: sys-radius/50% , Border: sys-border-md 1px, Size: 32*32 px for Expand button</li>
+<li>Check these changes with Dark/ Light/ High contrast mode/ narrator</li>
+</ul>
+</description>
+</item>
+</channel>
+</rss>
+    </pre>
+
+    <script>
+        // Make this page appear as XML content type for testing
+        document.contentType = 'application/xml';
+    </script>
+</body>
+</html>

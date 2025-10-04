@@ -2,23 +2,27 @@ document.addEventListener('DOMContentLoaded', async function() {
   try {
     async function getDataFromStorage(maxRetries = 5, retryDelay = 500) {
       for (let i = 0; i < maxRetries; i++) {
-        const result = await chrome.storage.local.get(['jiraContent', 'aiResult']);
-        if (result.jiraContent && result.aiResult) {
+        const result = await chrome.storage.local.get(['jiraContent', 'jiraContentHtml', 'aiResult']);
+        if ((result.jiraContent || result.jiraContentHtml) && result.aiResult) {
           return result;
         }
         if (i < maxRetries - 1) {
           await new Promise(resolve => setTimeout(resolve, retryDelay));
         }
       }
-      return await chrome.storage.local.get(['jiraContent', 'aiResult']);
+      return await chrome.storage.local.get(['jiraContent', 'jiraContentHtml', 'aiResult']);
     }
     
     const result = await getDataFromStorage();
     
-    if (result.jiraContent) {
-      document.getElementById('jiraContent').textContent = result.jiraContent;
+    // Display Jira content with HTML formatting if available
+    const jiraContentElement = document.getElementById('jiraContent');
+    if (result.jiraContentHtml) {
+      jiraContentElement.innerHTML = result.jiraContentHtml;
+    } else if (result.jiraContent) {
+      jiraContentElement.textContent = result.jiraContent;
     } else {
-      document.getElementById('jiraContent').textContent = 'Jira XML content not found';
+      jiraContentElement.textContent = 'Jira XML content not found';
     }
     
     if (result.aiResult) {

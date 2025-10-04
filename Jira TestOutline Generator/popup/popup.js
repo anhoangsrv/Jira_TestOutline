@@ -96,7 +96,13 @@ function summarizeHtmlContent(html) {
   const tmp = document.createElement('div');
   tmp.innerHTML = decodedHtml;
   
-  let result = '';
+  // Create a result object containing both HTML and text
+  let result = {
+    html: '',
+    text: ''
+  };
+  
+  let textContent = '';
   const headingCounters = [0, 0, 0, 0, 0, 0];
   
   function processElement(element, indentLevel = 0) {
@@ -105,9 +111,9 @@ function summarizeHtmlContent(html) {
     if (element.nodeType === Node.TEXT_NODE) {
       const text = element.textContent.trim();
       if (text) {
-        return indent + text + '\n';
+        return { html: text, text: indent + text + '\n' };
       }
-      return '';
+      return { html: '', text: '' };
     }
     
     if (element.nodeType === Node.ELEMENT_NODE) {
@@ -137,7 +143,9 @@ function summarizeHtmlContent(html) {
           
           const text = element.textContent.trim();
           if (text) {
-            return '\n' + headingNumber + '. ' + text + '\n\n';
+            const headingHtml = `<h${level} style="color: #00875a; font-weight: bold; margin: 15px 0 10px 0;">${headingNumber}. ${text}</h${level}>`;
+            const headingText = '\n' + headingNumber + '. ' + text + '\n\n';
+            return { html: headingHtml, text: headingText };
           }
         }
       }
@@ -146,23 +154,29 @@ function summarizeHtmlContent(html) {
         const text = element.textContent.trim();
         if (text) {
           const isBold = element.querySelector('b') || element.querySelector('strong');
+          let pHtml = `<p style="margin: 8px 0; line-height: 1.5;">${element.innerHTML}</p>`;
+          
           if (isBold && text.length < 50) {
-            return '\n' + indent + text + '\n';
+            return { html: pHtml, text: '\n' + indent + text + '\n' };
           }
-          return indent + text + '\n\n';
+          return { html: pHtml, text: indent + text + '\n\n' };
         }
       }
       
       if (tagName === 'ul' || tagName === 'ol') {
-        let listResult = '';
+        let listHtml = `<${tagName} style="margin: 10px 0; padding-left: 20px;">`;
+        let listText = '';
+        
         const items = element.querySelectorAll(':scope > li');
         items.forEach((item, index) => {
           const itemText = item.textContent.trim();
           if (itemText) {
+            listHtml += `<li style="margin: 5px 0; line-height: 1.4;">${item.innerHTML}</li>`;
+            
             if (tagName === 'ol') {
-              listResult += indent + (index + 1) + '. ' + itemText + '\n';
+              listText += indent + (index + 1) + '. ' + itemText + '\n';
             } else {
-              listResult += indent + '• ' + itemText + '\n';
+              listText += indent + '• ' + itemText + '\n';
             }
             
             const nestedLists = item.querySelectorAll('ul, ol');
@@ -172,51 +186,117 @@ function summarizeHtmlContent(html) {
                 const nestedText = nestedItem.textContent.trim();
                 if (nestedText) {
                   if (nestedList.tagName === 'ol') {
-                    listResult += '  ' + indent + '  ' + (index + 1) + '. ' + nestedText + '\n';
+                    listText += '  ' + indent + '  ' + (index + 1) + '. ' + nestedText + '\n';
                   } else {
-                    listResult += '  ' + indent + '  • ' + nestedText + '\n';
+                    listText += '  ' + indent + '  • ' + nestedText + '\n';
                   }
                 }
               });
             });
           }
         });
-        return listResult + '\n';
+        
+        listHtml += `</${tagName}>`;
+        listText += '\n';
+        
+        return { html: listHtml, text: listText };
+      }
+      
+      if (tagName === 'div' && element.classList.contains('table-wrap')) {
+        // Handle table wrapper div
+        const table = element.querySelector('table');
+        if (table) {
+          return processElement(table, indentLevel);
+        }
       }
       
       if (tagName === 'table') {
-        let tableResult = '\n';
+        // Create responsive table HTML with horizontal scroll
+        let tableHtml = `
+          <div class="table-container" style="overflow-x: auto; margin: 15px 0; border: 1px solid #ddd; border-radius: 6px;">
+            <table style="
+              min-width: 100%; 
+              border-collapse: collapse; 
+              font-size: 13px; 
+              background: white;
+              white-space: nowrap;
+            ">
+        `;
+        
+        let tableText = '\n';
         const rows = element.querySelectorAll('tr');
+        
         rows.forEach((row, rowIndex) => {
           const cells = row.querySelectorAll('td, th');
           if (cells.length > 0) {
+            tableHtml += '<tr>';
             let rowText = indent;
+            
             cells.forEach((cell, cellIndex) => {
               const cellText = cell.textContent.trim().replace(/\s+/g, ' ');
+              const isHeader = cell.tagName.toLowerCase() === 'th' || rowIndex === 0;
+              
+              if (isHeader) {
+                tableHtml += `<th style="
+                  padding: 12px 8px; 
+                  background: #f8f9fa; 
+                  border: 1px solid #ddd; 
+                  font-weight: bold; 
+                  text-align: left;
+                  min-width: 100px;
+                ">${cell.innerHTML}</th>`;
+              } else {
+                tableHtml += `<td style="
+                  padding: 10px 8px; 
+                  border: 1px solid #ddd; 
+                  vertical-align: top;
+                  min-width: 100px;
+                ">${cell.innerHTML}</td>`;
+              }
+              
               rowText += (cellIndex > 0 ? ' | ' : '') + cellText;
             });
-            tableResult += rowText + '\n';
+            
+            tableHtml += '</tr>';
+            tableText += rowText + '\n';
           }
         });
-        return tableResult + '\n';
+        
+        tableHtml += '</table></div>';
+        tableText += '\n';
+        
+        return { html: tableHtml, text: tableText };
       }
       
-      let otherResult = '';
-      for (let child of element.childNodes) {
-        otherResult += processElement(child, indentLevel);
+      if (tagName === 'img') {
+        const src = element.getAttribute('src');
+        const alt = element.getAttribute('alt') || 'Image';
+        const imgHtml = `<div style="margin: 10px 0;"><img src="${src}" alt="${alt}" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px;"/></div>`;
+        const imgText = `[Image: ${alt}]\n`;
+        return { html: imgHtml, text: imgText };
       }
-      return otherResult;
+      
+      let otherHtml = '';
+      let otherText = '';
+      for (let child of element.childNodes) {
+        const childResult = processElement(child, indentLevel);
+        otherHtml += childResult.html;
+        otherText += childResult.text;
+      }
+      return { html: otherHtml, text: otherText };
     }
     
-    return '';
+    return { html: '', text: '' };
   }
   
   for (let child of tmp.childNodes) {
-    result += processElement(child);
+    const childResult = processElement(child);
+    result.html += childResult.html;
+    result.text += childResult.text;
   }
   
-  result = result.replace(/\n\s*\n/g, '\n\n');
-  result = result.trim();
+  result.text = result.text.replace(/\n\s*\n/g, '\n\n');
+  result.text = result.text.trim();
   
   return result;
 }
@@ -268,12 +348,14 @@ document.getElementById("generateTestOutline").addEventListener("click", async (
     
     console.log('Summarized HTML content');
     
-    await saveToStorage('jiraContent', summarizedContent);
+    // Store both HTML and text versions
+    await saveToStorage('jiraContentHtml', summarizedContent.html);
+    await saveToStorage('jiraContent', summarizedContent.text);
     
     outputDiv.innerText = "🤖 Sending data to AI to generate Test Outline...";
     
     const content = {
-      titles: [{ text: summarizedContent }]
+      titles: [{ text: summarizedContent.text }]
     };
     
     try {
