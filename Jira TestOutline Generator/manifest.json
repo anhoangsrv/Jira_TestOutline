@@ -13,7 +13,8 @@
     "<all_urls>"
   ],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.js",
+    "type": "module"
   },
   "action": {
     "default_popup": "popup/popup.html",
@@ -26,7 +27,9 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["popup/result.html"],
+      "resources": [
+        "popup/result.html"
+      ],
       "matches": ["<all_urls>"]
     }
   ]

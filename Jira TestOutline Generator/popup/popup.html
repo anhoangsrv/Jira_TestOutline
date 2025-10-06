@@ -13,6 +13,25 @@
   
   <div id="output" style="margin-top: 20px; white-space: pre-wrap;"></div>
 
-  <script type="module" src="popup.js"></script>
+  <!-- Use unified script with feature flag -->
+  <script src="popup-unified.js"></script>
+  
+  <!-- Debug script to show loading status -->
+  <script>
+    console.log("🔧 Debug: popup.html loaded");
+    console.log("🔧 Debug: Document ready state:", document.readyState);
+    
+    // Show immediate feedback
+    setTimeout(() => {
+      const outputDiv = document.getElementById("output");
+      if (outputDiv && !outputDiv.innerHTML.trim()) {
+        outputDiv.innerHTML = `
+          <div style="padding: 8px; background: #fff3e0; border-radius: 4px; border-left: 3px solid #ff9800; font-size: 12px;">
+            ⏳ Loading extension... Please wait
+          </div>
+        `;
+      }
+    }, 100);
+  </script>
 </body>
 </html>
