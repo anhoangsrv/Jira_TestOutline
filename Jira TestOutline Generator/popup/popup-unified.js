@@ -352,18 +352,9 @@ function updateUI(message, type = 'info') {
   
   // Update the UI with styled message
   if (type === 'error') {
-    outputDiv.innerHTML = `
-      <div style="${style}">
-        ${icon} <strong>Error:</strong> ${message}
-        <br><small>Please try again or check the console for details</small>
-      </div>
-    `;
+    outputDiv.innerHTML = `<div style="${style}">${icon} <strong>Error:</strong> ${message}<br><small>Please try again or check the console for details</small></div>`;
   } else {
-    outputDiv.innerHTML = `
-      <div style="${style}">
-        ${icon} ${message}
-      </div>
-    `;
+    outputDiv.innerHTML = `<div style="${style}">${icon} ${message}</div>`;
   }
 }
 
